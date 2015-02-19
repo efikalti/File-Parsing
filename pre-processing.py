@@ -29,10 +29,13 @@ def main(argv):
    if str=="c":
         print "good lets continue."
         #open the files for input and output
-        infile = codecs.open(inputfile,encoding='utf-8',mode='r')
+        #infile = codecs.open(inputfile,encoding='utf-8',mode='r')
+        infile = open(inputfile, 'rb')
         outfile = codecs.open(outputfile, encoding='utf-8', mode='w')
         #parse every line of the input file
-        for line in infile:
+        for raw_line in infile:
+            #convert each line from binary to unicode, replacing every non-unicode char
+            line = raw_line.decode('utf-8','replace')
             #replace all non-latin characters with latin ones
             line = unidecode(line)
             #make the every character lowercase
@@ -55,8 +58,9 @@ def main(argv):
               #join the finally clean field to a final string
               final_string = final_string + field + '|'
             #write the final string, containing the fields separates by | to the output file
-            #outfile.write(final_string)
-            print final_string
+            final_string = final_string + '\n'
+            outfile.write(final_string)
+            #print final_string
         #close the files
         infile.close()
         outfile.close()
