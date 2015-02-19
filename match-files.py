@@ -35,6 +35,20 @@ def main(argv):
         fields1 = file1.readline().split(reg_ex)
         #read fields of file 2
         fields2 = file2.readline()split(reg_ex)
+        #read every line of file2 into one variable
+        file2_lines = file2.readlines()
+        #parse every line of file1
+        for line in file1:
+            i, j = 0
+            #split the lines into parts
+            parts1 = line.split(reg_ex)
+            parts2 = file2_lines.split(reg_ex)
+            for part in parts1:
+                if fields1[i] == fields2[j]:
+                    ### match the fields between the lines
+                else:
+                    i = i + 1
+                    j = j + 1
         #close files
         file1.close()
         file2.close()
