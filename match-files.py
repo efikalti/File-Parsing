@@ -1,58 +1,65 @@
 #!/usr/bin/env python
-import sys, codecs
+import sys, getopt
+from unidecode import unidecode
+import codecs
+import re, string
 
 reg_ex = '|'
 
 def main(argv):
    #argument variables
-   inputfile = ''
    outputfile = ''
-   reg_ex = ''
+   filename1 = ''
+   filename2 = ''
    # try-loop to assign the given arguments to the variables
    try:
       opts, args = getopt.getopt(argv,"ho:",["file1=","file2=","ofile="])
    except getopt.GetoptError:
-      print 'usage: test.py --file1=<first_file> --file2=<second_file> -o <outputfile>'
+      print 'usage: match-files.py --file1=<first_file> --file2=<second_file> -o <outputfile>'
       sys.exit(2)
    for opt, arg in opts:
       if opt in ("--file1"):
          filename1 = arg
       elif opt in ("--file2"):
          filename2 = arg
-      elif opt in ("-o", "--ofile"):
+      elif opt in ("-o", "--output"):
          outputfile = arg
    print 'First file is', filename1
    print 'Second file is', filename2
    print 'Output file is ', outputfile
    #get confirmation that the given arguments are right to continue
    str = raw_input("enter c to continue: ")
+
    if str=="c":
         #open files
-        file1 = codecs.open("filename1", encoding="utf-8", mode="r")
-        file2 = codecs.open("filename2", encoding="utf-8", mode="r")
-        outfile = codecs.open("outputfile", encoding="utf-8", mode="w")
+        file1 = open(filename1,"r")
+        file2 = open(filename2, "r")
+       # outfile = codecs.open(outputfile, "w")
+        
         #read fields of file1
-        fields1 = file1.readline().split(reg_ex)
+        fields1 = file1.readline().strip().split(reg_ex)
         #read fields of file 2
-        fields2 = file2.readline()split(reg_ex)
+        fields2 = file2.readline().strip().split(reg_ex)
+        print fields1
+        print fields2
         #read every line of file2 into one variable
         file2_lines = file2.readlines()
         #parse every line of file1
-        for line in file1:
-            i, j = 0
+       # for line in file1:
+       #     i, j = 0
             #split the lines into parts
-            parts1 = line.split(reg_ex)
-            parts2 = file2_lines.split(reg_ex)
-            for part in parts1:
-                if fields1[i] == fields2[j]:
+       #     parts1 = line.split(reg_ex)
+       #     parts2 = file2_lines.split(reg_ex)
+       #     for part in parts1:
+       #         if fields1[i] == fields2[j]:
                     ### match the fields between the lines
-                else:
-                    i = i + 1
-                    j = j + 1
+       #         else:
+       #             i = i + 1
+       #             j = j + 1
         #close files
         file1.close()
         file2.close()
-        outfile.close()
+       # outfile.close()
    else:
         exit(0)
 

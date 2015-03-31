@@ -12,7 +12,7 @@ def main(argv):
    try:
       opts, args = getopt.getopt(argv,"hi:o:r:",["ifile=","ofile=","regex="])
    except getopt.GetoptError:
-      print 'usage: test.py -i <inputfile> -o <outputfile>'
+      print 'usage: pre-processing.py -i <inputfile> -o <outputfile> -r <regex>'
       sys.exit(2)
    for opt, arg in opts:
       if opt in ("-i", "--ifile"):
@@ -26,6 +26,7 @@ def main(argv):
    print 'Regular expression is ', reg_ex
    #get confirmation that the given arguments are right to continue
    str = raw_input("enter c to continue: ")
+
    if str=="c":
         print "good lets continue."
         #open the files for input and output
@@ -47,10 +48,11 @@ def main(argv):
             #remove multiple appearances of the argument reg_ex
             reg_sub = '[' + reg_ex + ']+'
             line = re.sub(reg_sub, reg_ex, line)
+            line = re.sub('"', '', line)
             #split the line in pieces, each separated by the reg_ex
             fields = line.split(reg_ex)
             #use a new reg_ex to separate the fields
-            final_string = '|'
+            final_string = ''
             for field in fields:
               #field = re.sub(r'[^\w.-]+', ' ', field)
               #strip line from trailing whitespaces
@@ -58,7 +60,7 @@ def main(argv):
               #join the finally clean field to a final string
               final_string = final_string + field + '|'
             #write the final string, containing the fields separates by | to the output file
-            final_string = final_string + '\n'
+            final_string =  final_string[:len(final_string)-1] + '\n'
             outfile.write(final_string)
             #print final_string
         #close the files
